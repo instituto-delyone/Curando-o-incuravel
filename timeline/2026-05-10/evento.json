@@ -1,1 +1,19 @@
-placeholder
+{
+  "data": "2026-05-10",
+  "titulo": "Ajuizamento do Mandado de Segurança",
+  "descricao": "Formalização judicial da controvérsia envolvendo impedimento informal de exercício profissional.",
+  "eventos": [
+    {
+      "tipo": "judicial",
+      "titulo": "Petição inicial protocolada"
+    },
+    {
+      "tipo": "financeiro",
+      "titulo": "Declaração de hipossuficiência"
+    },
+    {
+      "tipo": "prova",
+      "titulo": "Comprovação de escalas médicas"
+    }
+  ]
+}
