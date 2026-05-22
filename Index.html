@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Linha do Tempo Probatória</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f8; color: #1f2933; }
+    header { background: #111827; color: white; padding: 24px; text-align: center; }
+    main { max-width: 1000px; margin: auto; padding: 20px; }
+    .months { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .month { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 4px 14px #0001; }
+    .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .day, .label { text-align: center; padding: 10px 0; border-radius: 8px; }
+    .label { font-weight: bold; color: #6b7280; }
+    .day { background: #eef2f7; cursor: pointer; }
+    .day.event { background: #1f2937; color: white; font-weight: bold; }
+    .day:hover { outline: 2px solid #2563eb; }
+    .panel { margin-top: 24px; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 14px #0001; }
+    .event-card { border-left: 5px solid #111827; padding: 12px; margin: 12px 0; background: #f9fafb; border-radius: 8px; }
+    .proof a { color: #2563eb; font-weight: bold; text-decoration: none; }
+    .tag { display: inline-block; background: #e5e7eb; padding: 4px 8px; border-radius: 999px; font-size: 12px; margin-top: 6px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Linha do Tempo Probatória</h1>
+  <p>Organização cronológica de fatos, documentos, comunicações e prejuízos</p>
+</header>
+
+<main>
+  <section class="months" id="calendar"></section>
+
+  <section class="panel" id="details">
+    <h2>Selecione uma data</h2>
+    <p>Clique em um dia marcado para visualizar ocorridos, provas e anexos.</p>
+  </section>
+</main>
+
+<script>
+const eventos = [
+  {
+    date: "2026-04-07",
+    title: "Plantão noturno na UPA Itaipu",
+    category: "Comparecimento / escala",
+    description: "Registro de presença no plantão noturno e elementos que indicam a entrada no período apontado.",
+    proofs: [
+      {
+        title: "Print grupo UPA médicos/gestores",
+        path: "provas/05_comparecimento_plantoes/imagens/EVID-001_print-grupo-upa-07-04.png"
+      }
+    ]
+  },
+  {
+    date: "2026-04-17",
+    title: "Tramitação administrativa sem ciência formal",
+    category: "Ocultação procedimental",
+    description: "Processo administrativo passou a tramitar sob restrição de acesso, sem comunicação formal tempestiva ao interessado.",
+    proofs: [
+      {
+        title: "Petição pessoal complementar",
+        path: "provas/09_documentos_judiciais/pdfs/EVID-002_peticao-adendo.pdf"
+      }
+    ]
+  },
+  {
+    date: "2026-05-21",
+    title: "Petição pessoal complementar protocolada",
+    category: "Documento judicial / hipossuficiência",
+    description: "Relato pessoal com cronologia, hipossuficiência financeira, tentativa de resolução e contestação da narrativa administrativa.",
+    proofs: [
+      {
+        title: "Petição-adendo",
+        path: "provas/09_documentos_judiciais/pdfs/EVID-003_peticao-adendo-delyone.pdf"
+      }
+    ]
+  }
+];
+
+function makeMonth(year, month) {
+  const names = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  const first = new Date(year, month, 1).getDay();
+  const days = new Date(year, month + 1, 0).getDate();
+
+  let html = `<div class="month"><h2>${names[month]} ${year}</h2><div class="grid">`;
+  ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"].forEach(d => html += `<div class="label">${d}</div>`);
+  for (let i = 0; i < first; i++) html += `<div></div>`;
+
+  for (let d = 1; d <= days; d++) {
+    const date = `${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    const hasEvent = eventos.some(e => e.date === date);
+    html += `<div class="day ${hasEvent ? "event" : ""}" onclick="showDate('${date}')">${d}</div>`;
+  }
+
+  html += `</div></div>`;
+  return html;
+}
+
+function showDate(date) {
+  const selected = eventos.filter(e => e.date === date);
+  const box = document.getElementById("details");
+
+  if (!selected.length) {
+    box.innerHTML = `<h2>${date}</h2><p>Nenhum evento cadastrado ainda.</p>`;
+    return;
+  }
+
+  box.innerHTML = `<h2>${date}</h2>` + selected.map(e => `
+    <div class="event-card">
+      <h3>${e.title}</h3>
+      <span class="tag">${e.category}</span>
+      <p>${e.description}</p>
+      <h4>Provas vinculadas</h4>
+      ${e.proofs.map(p => `
+        <p class="proof">📎 <a href="${p.path}" target="_blank">${p.title}</a></p>
+      `).join("")}
+    </div>
+  `).join("");
+}
+
+document.getElementById("calendar").innerHTML =
+  makeMonth(2026, 3) + makeMonth(2026, 4);
+</script>
+
+</body>
+</html>
