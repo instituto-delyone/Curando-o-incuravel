@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curando o Incurável — Linha do Tempo Probatória</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 34px 18px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+
+    header p {
+      color: #d1d5db;
+      font-size: 16px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 22px;
+    }
+
+    .summary {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .metric {
+      background: #f9fafb;
+      border-left: 5px solid #111827;
+      padding: 14px;
+      border-radius: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .calendar-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .month {
+      background: white;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .month h2 {
+      text-align: center;
+      margin-top: 0;
+      font-size: 28px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 7px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #6b7280;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .day {
+      background: #e5e7eb;
+      padding: 12px 0;
+      text-align: center;
+      border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .day:hover {
+      outline: 2px solid #2563eb;
+    }
+
+    .day.event {
+      background: #111827;
+      color: white;
+      font-weight: bold;
+    }
+
+    .panel {
+      margin-top: 24px;
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .event-card {
+      border-left: 6px solid #111827;
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e5e7eb;
+      color: #374151;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    a {
+      color: #2563eb;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .small {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .warning {
+      background: #fff7ed;
+      border-left: 5px solid #f97316;
+      padding: 14px;
+      border-radius: 12px;
+      margin-top: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Curando o Incurável</h1>
+  <p>Linha do tempo probatória — fatos, documentos, provas, prejuízo e impactos</p>
+</header>
+
+<main>
+
+  <section class="summary">
+    <h2>Resumo estrutural do caso</h2>
+    <p>
+      Esta página organiza, em ordem cronológica, documentos, prints, memorandos, comunicações,
+      cálculos de prejuízo e atos administrativos relacionados ao afastamento/suspensão funcional,
+      às tentativas de regularização e aos impactos financeiros e profissionais decorrentes.
+    </p>
+
+    <div class="metric-grid">
+      <div class="metric">
+        <strong>07–08/04</strong>
+        Plantão crítico, caos operacional e atuação assistencial documentada.
+      </div>
+      <div class="metric">
+        <strong>13/04</strong>
+        Bloqueio operacional de fato informado como marco inicial.
+      </div>
+      <div class="metric">
+        <strong>17/04</strong>
+        Memorando formal e tentativa de esclarecimento com gestão/secretaria.
+      </div>
+      <div class="metric">
+        <strong>R$ 21.330+</strong>
+        Estimativa inicial de prejuízo direto pelos plantões interrompidos.
+      </div>
+    </div>
+
+    <div class="warning">
+      <b>Observação:</b> a força probatória da linha do tempo está na comparação entre fatos operacionais contemporâneos,
+      atos administrativos posteriores e efeitos financeiros progressivos.
+    </div>
+  </section>
+
+  <section class="calendar-wrapper" id="calendar"></section>
+
+  <section class="panel" id="details">
+    <h2>Selecione uma data</h2>
+    <p>Clique em um dia marcado no calendário para visualizar eventos, documentos, provas vinculadas e impacto.</p>
+  </section>
+
+</main>
+
+<script>
+const eventos = [
+  {
+    date: "2026-04-07",
+    time: "15:57 - 23:59",
+    title: "Plantão UPA Itaipu — caos operacional e início do contexto",
+    category: "Contexto operacional / comparecimento",
+    description: "Registros do grupo da UPA demonstram unidade sobrecarregada, dificuldades de fluxo, reclamações de pacientes, escala em ajuste e presença funcional do profissional no contexto da sala vermelha.",
+    impact: "Ajuda a demonstrar que o episódio ocorreu em ambiente de forte instabilidade operacional, com déficit de equipe, pressão assistencial e atuação médica em cenário crítico.",
+    proofs: [
+      { title: "Prints do grupo médico — fluxo e reclamações", path: "timeline/2026-04-07/IMG_4561.png" },
+      { title: "Escala e composição da equipe", path: "timeline/2026-04-07/IMG_4562.png" },
+      { title: "Mapa diário/enfermarias", path: "timeline/2026-04-07/IMG_4564.png" },
+      { title: "Contexto sala vermelha", path: "timeline/2026-04-07/IMG_4565.png" }
+    ]
+  },
+
+  {
+    date: "2026-04-08",
+    time: "04:25 - 07:01",
+    title: "Plantão crítico — TCE grave, intubação, estabilização e regulação",
+    category: "Atuação médica crítica / resolução operacional",
+    description: "Registros mostram solicitação de resgate, manejo de paciente grave, intubação, sedação, estabilização, encaminhamento à regulação e reorganização da unidade ao final do plantão.",
+    impact: "Demonstra atuação técnica complexa e efetiva em cenário assistencial grave, contrastando com narrativa posterior de insegurança assistencial.",
+    proofs: [
+      { title: "Conversa sobre TCE/politrauma", path: "timeline/2026-04-08/IMG_4568.png" },
+      { title: "Registro de intubação, sedação e estabilização", path: "timeline/2026-04-08/IMG_4569.png" },
+      { title: "Documento clínico/regulação", path: "timeline/2026-04-08/IMG_4570.png" }
+    ]
+  },
+
+  {
+    date: "2026-04-17",
+    time: "12:29 - 22:04",
+    title: "Memorando formal e tentativa de esclarecimento administrativo",
+    category: "Ato administrativo / contraditório",
+    description: "Memorando nº 54/2026 relata supostas intercorrências e sugere suspensão cautelar. No mesmo dia, há conversas demonstrando tentativa de esclarecimento sobre plantão, restrição e existência de processo ativo.",
+    impact: "A data é ponto formal de inflexão: o documento administrativo aparece em paralelo a comunicações que indicam indefinição operacional e busca ativa por orientação oficial.",
+    proofs: [
+      { title: "Memorando nº 54/2026", path: "timeline/2026-04-17/IMG_4561.png" },
+      { title: "Conversa com RT sobre plantão e secretaria", path: "timeline/2026-04-17/IMG_4562.png" },
+      { title: "Informação sobre ausência de restrição/processo", path: "timeline/2026-04-17/IMG_4564.png" },
+      { title: "Solicitação de confirmação formal", path: "timeline/2026-04-17/IMG_4565.png" }
+    ]
+  },
+
+  {
+    date: "2026-04-23",
+    time: "",
+    title: "Encaminhamento interno para análise administrativa",
+    category: "Tramitação SEI / análise administrativa",
+    description: "Despacho nº 192/2026 encaminha a situação para análise administrativa, contratos, advocacia setorial e assessoria técnica.",
+    impact: "Mostra que a tramitação administrativa ainda estava em desenvolvimento após o bloqueio funcional já percebido na prática.",
+    proofs: [
+      { title: "Despacho nº 192/2026", path: "timeline/2026-04-29_tramite_em_segredo/IMG_4572.png" }
+    ]
+  },
+
+  {
+    date: "2026-04-28",
+    time: "08:30 - 10:40",
+    title: "Orientação jurídica independente sobre bloqueio informal",
+    category: "Busca de solução / orientação jurídica",
+    description: "Contato com advogado externo para relatar suspensão informal, ausência de processo administrativo visível e prejuízo financeiro progressivo.",
+    impact: "Demonstra busca ativa por regularização e validação jurídica contemporânea de que o impedimento informal, indefinido e sem justificativa documentada exigia providência formal.",
+    proofs: [
+      { title: "Contato inicial com advogado", path: "timeline/2026-04-28/IMG_4568.png" },
+      { title: "Resposta sobre impedimento informal", path: "timeline/2026-04-28/IMG_4569.png" },
+      { title: "Orientação sobre requerimento e mandado", path: "timeline/2026-04-28/IMG_4570.png" }
+    ]
+  },
+
+  {
+    date: "2026-04-29",
+    time: "",
+    title: "Parecer jurídico pela viabilidade de suspensão cautelar",
+    category: "Parecer jurídico / tramitação em segredo",
+    description: "Chefia da Advocacia Setorial manifesta viabilidade jurídica da suspensão cautelar, condicionada à apuração regular, contraditório e ampla defesa.",
+    impact: "Documento relevante por reconhecer a necessidade de procedimento administrativo regular, contraditório, ampla defesa e intimação formal.",
+    proofs: [
+      { title: "Despacho nº 1298/2026 — página inicial", path: "timeline/2026-04-29_tramite_em_segredo/IMG_4573.png" },
+      { title: "Despacho nº 1298/2026 — conclusão", path: "timeline/2026-04-29_tramite_em_segredo/IMG_4574.png" }
+    ]
+  },
+
+  {
+    date: "2026-05-10",
+    time: "",
+    title: "Ajuizamento do Mandado de Segurança",
+    category: "Judicial / início formal",
+    description: "Organização e protocolo dos documentos relacionados ao Mandado de Segurança, incluindo petição inicial, comprovantes, contrato, representação e documentos de apoio.",
+    impact: "Marca o início formal da reação judicial ao impedimento de exercício profissional e organiza a base documental do caso.",
+    proofs: [
+      { title: "Petição inicial do Mandado de Segurança", path: "timeline/2026-05-10/judicial/peticao_inicial_mandado_seguranca.pdf" },
+      { title: "Comprovante de distribuição do processo", path: "timeline/2026-05-10/judicial/comprovante_distribuicao_processo.pdf" }
+    ]
+  },
+
+  {
+    date: "2026-05-13",
+    time: "11:44",
+    title: "Secretário acata parecer e determina suspensão cautelar",
+    category: "Ato administrativo / suspensão",
+    description: "Despacho nº 2771/2026 acata parecer jurídico e determina suspensão cautelar do contrato até apuração dos fatos em processo administrativo.",
+    impact: "Formaliza administrativamente medida que deve ser comparada com a data do bloqueio funcional prático e com a ciência efetiva do interessado.",
+    proofs: [
+      { title: "Despacho nº 2771/2026", path: "timeline/2026-04-29_tramite_em_segredo/IMG_4575.png" }
+    ]
+  },
+
+  {
+    date: "2026-05-20",
+    time: "12:06",
+    title: "Determinação de ciência e defesa escrita",
+    category: "Contraditório / ampla defesa",
+    description: "Despacho nº 1417/2026 determina ciência integral da decisão administrativa e adoção de medidas para intimação formal para apresentação de defesa escrita.",
+    impact: "Reforça que a formalização da defesa e da ciência ocorre em momento posterior à restrição prática previamente relatada.",
+    proofs: [
+      { title: "Despacho nº 1417/2026", path: "timeline/2026-04-29_tramite_em_segredo/IMG_4576.png" },
+      { title: "Assinatura e QR Code do despacho", path: "timeline/2026-04-29_tramite_em_segredo/IMG_4577.png" }
+    ]
+  },
+
+  {
+    date: "2026-05-21",
+    time: "",
+    title: "Petição pessoal complementar e resposta administrativa",
+    category: "Documento judicial / hipossuficiência",
+    description: "Petição pessoal complementar e organização de elementos sobre hipossuficiência, prejuízo financeiro, busca de regularização e cronologia dos fatos.",
+    impact: "Documento-base para consolidar narrativa factual, dano financeiro, tentativa de solução administrativa e necessidade de apreciação judicial.",
+    proofs: [
+      { title: "Petição-adendo", path: "Linha do tempo principal/petição-adendo-delyone-de-paula-canedo-filho.pdf" }
+    ]
+  }
+];
+
+function makeMonth(year, monthIndex) {
+  const monthNames = [
+    "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+    "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"
+  ];
+
+  const firstDay = new Date(year, monthIndex, 1).getDay();
+  const totalDays = new Date(year, monthIndex + 1, 0).getDate();
+
+  let html = `<div class="month"><h2>${monthNames[monthIndex]} ${year}</h2><div class="grid">`;
+
+  ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"].forEach(d => {
+    html += `<div class="label">${d}</div>`;
+  });
+
+  for (let i = 0; i < firstDay; i++) html += `<div></div>`;
+
+  for (let day = 1; day <= totalDays; day++) {
+    const date = `${year}-${String(monthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const hasEvent = eventos.some(e => e.date === date);
+    html += `<div class="day ${hasEvent ? "event" : ""}" onclick="showDate('${date}')">${day}</div>`;
+  }
+
+  html += `</div></div>`;
+  return html;
+}
+
+function showDate(date) {
+  const selected = eventos.filter(e => e.date === date);
+  const panel = document.getElementById("details");
+
+  if (selected.length === 0) {
+    panel.innerHTML = `
+      <h2>${formatDate(date)}</h2>
+      <p>Nenhum evento cadastrado ainda para esta data.</p>
+      <p class="small">Adicione novo bloco no array <b>eventos</b>.</p>
+    `;
+    return;
+  }
+
+  panel.innerHTML = `
+    <h2>${formatDate(date)}</h2>
+    ${selected.map(e => `
+      <div class="event-card">
+        <h3>${e.title}</h3>
+        <div class="tag">${e.category}</div>
+        ${e.time ? `<p><b>Horário:</b> ${e.time}</p>` : ""}
+        <p><b>Descrição:</b> ${e.description}</p>
+        <p><b>Impacto:</b> ${e.impact}</p>
+        <h4>Provas vinculadas</h4>
+        ${e.proofs.map(p => `<p>📎 <a href="${p.path}" target="_blank">${p.title}</a></p>`).join("")}
+      </div>
+    `).join("")}
+  `;
+}
+
+function formatDate(date) {
+  const [y, m, d] = date.split("-");
+  return `${d}/${m}/${y}`;
+}
+
+document.getElementById("calendar").innerHTML =
+  makeMonth(2026, 3) + makeMonth(2026, 4);
+</script>
+
+</body>
+</html>
