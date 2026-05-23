@@ -596,6 +596,12 @@ function formatDate(date) {
 document.getElementById("calendar").innerHTML =
   makeMonth(2026, 3) + makeMonth(2026, 4);
 </script>
-
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js');
+  });
+}
+</script>
 </body>
 </html>
